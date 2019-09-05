@@ -174,6 +174,7 @@ Pikaday has many useful options:
 * `theme` define a classname that can be used as a hook for styling different themes, see [theme example][] (default `null`)
 * `blurFieldOnSelect` defines if the field is blurred when a date is selected (default `true`)
 * `onSelect` callback function for when a date is selected
+* `onMouseOver` callback function for when a date hovered
 * `onOpen` callback function for when the picker becomes visible
 * `onClose` callback function for when the picker is hidden
 * `onDraw` callback function for when the picker draws a new month

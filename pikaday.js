@@ -285,6 +285,7 @@
 
         // callback function
         onSelect: null,
+        onMouseOver: null,
         onOpen: null,
         onClose: null,
         onDraw: null,
@@ -530,6 +531,26 @@
             }
         };
 
+        self._onMouseOver = function(e)
+        {
+            if (!self._v) {
+                return;
+            }
+            e = e || window.event;
+            var target = e.target || e.srcElement;
+
+            if (!target) {
+                return;
+            }
+
+            if (!hasClass(target, 'is-disabled')) {
+                if (hasClass(target, 'pika-button') && !hasClass(target, 'is-empty') && !hasClass(target.parentNode, 'is-disabled')) {
+                    self.emitHoveredDate(new Date(target.getAttribute('data-pika-year'), target.getAttribute('data-pika-month'), target.getAttribute('data-pika-day')));
+                }
+            }
+        };
+
+
         self._onChange = function(e)
         {
             e = e || window.event;
@@ -664,6 +685,7 @@
         self.el.className = 'pika-single' + (opts.isRTL ? ' is-rtl' : '') + (opts.theme ? ' ' + opts.theme : '');
 
         addEvent(self.el, 'mousedown', self._onMouseDown, true);
+        addEvent(self.el, 'mouseover', self._onMouseOver, true);
         addEvent(self.el, 'touchend', self._onMouseDown, true);
         addEvent(self.el, 'change', self._onChange);
 
@@ -860,6 +882,23 @@
             }
             if (!preventOnSelect && typeof this._o.onSelect === 'function') {
                 this._o.onSelect.call(this, this.getDate());
+            }
+        },
+
+         /**
+         * emits the hovered date and element
+         */
+        emitHoveredDate: function(date)
+        {
+            if (typeof date === 'string') {
+                date = new Date(Date.parse(date));
+            }
+            if (!isDate(date)) {
+                return;
+            }
+
+            if (typeof this._o.onMouseOver === 'function') {
+                this._o.onMouseOver.call(this, date);
             }
         },
 
@@ -1280,6 +1319,7 @@
 
             this.hide();
             removeEvent(this.el, 'mousedown', this._onMouseDown, true);
+            removeEvent(this.el, 'mouseover', this._onMouseOver, true);
             removeEvent(this.el, 'touchend', this._onMouseDown, true);
             removeEvent(this.el, 'change', this._onChange);
             if (opts.keyboardInput) {
