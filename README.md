@@ -170,7 +170,7 @@ Pikaday has many useful options:
 * `enableSelectionDaysInNextAndPreviousMonths` allows user to select date that is in the next or previous months (default: false)
 * `numberOfMonths` number of visible calendars
 * `mainCalendar` when `numberOfMonths` is used, this will help you to choose where the main calendar will be (default `left`, can be set to `right`). Only used for the first display or when a selected date is not already visible
-* `events` array of dates that you would like to differentiate from regular days (e.g. `['Sat Jun 28 2017', 'Sun Jun 29 2017', 'Tue Jul 01 2017',]`)
+* `events` array of object dates that you would like to differentiate from regular days and contain an event (e.g. `[{date: 'Sat Jun 28 2017', event: 'Event 1'}, {date: 'Sat Jun 29 2017', event: 'Event 2'}, {date: 'Sat Jun 30 2017', event: 'Event 3'},]`)
 * `theme` define a classname that can be used as a hook for styling different themes, see [theme example][] (default `null`)
 * `blurFieldOnSelect` defines if the field is blurred when a date is selected (default `true`)
 * `onSelect` callback function for when a date is selected
