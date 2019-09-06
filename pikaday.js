@@ -889,7 +889,7 @@
             }
         },
 
-         /**
+        /**
          * emits the hovered date and element
          */
         emitHoveredDate: function(date)
