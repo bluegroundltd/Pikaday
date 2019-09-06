@@ -285,6 +285,8 @@
 
         // callback function
         onSelect: null,
+        onHover: null,
+        onUnhover: null,
         onOpen: null,
         onClose: null,
         onDraw: null,
@@ -530,6 +532,29 @@
             }
         };
 
+        self._onHover = function(e)
+        {
+            if (!self._v) {
+                return;
+            }
+            e = e || window.event;
+            var target = e.target || e.srcElement;
+
+            if (!target) {
+                return;
+            }
+
+            if (!hasClass(target, 'is-disabled')) {
+                if (hasClass(target, 'pika-button') && !hasClass(target, 'is-empty') && !hasClass(target.parentNode, 'is-disabled')) {
+                    self.emitHoveredDate(new Date(target.getAttribute('data-pika-year'), target.getAttribute('data-pika-month'), target.getAttribute('data-pika-day')));
+                    return;
+                }
+            }
+
+            self.emitUnhover();
+        };
+
+
         self._onChange = function(e)
         {
             e = e || window.event;
@@ -664,6 +689,7 @@
         self.el.className = 'pika-single' + (opts.isRTL ? ' is-rtl' : '') + (opts.theme ? ' ' + opts.theme : '');
 
         addEvent(self.el, 'mousedown', self._onMouseDown, true);
+        addEvent(self.el, 'mouseover', self._onHover, true);
         addEvent(self.el, 'touchend', self._onMouseDown, true);
         addEvent(self.el, 'change', self._onChange);
 
@@ -860,6 +886,33 @@
             }
             if (!preventOnSelect && typeof this._o.onSelect === 'function') {
                 this._o.onSelect.call(this, this.getDate());
+            }
+        },
+
+        /**
+         * emits the hovered date and element
+         */
+        emitHoveredDate: function(date)
+        {
+            if (typeof date === 'string') {
+                date = new Date(Date.parse(date));
+            }
+            if (!isDate(date)) {
+                return;
+            }
+
+            if (typeof this._o.onHover === 'function') {
+                this._o.onHover.call(this, date);
+            }
+        },
+
+        /**
+         * emits the unhover event from a date
+         */
+        emitUnhover: function()
+        {
+            if (typeof this._o.onHover === 'function') {
+                this._o.onUnhover.call(this);
             }
         },
 
@@ -1280,6 +1333,7 @@
 
             this.hide();
             removeEvent(this.el, 'mousedown', this._onMouseDown, true);
+            removeEvent(this.el, 'mouseover', this._onHover, true);
             removeEvent(this.el, 'touchend', this._onMouseDown, true);
             removeEvent(this.el, 'change', this._onChange);
             if (opts.keyboardInput) {
