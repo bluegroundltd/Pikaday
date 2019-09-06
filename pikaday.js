@@ -286,6 +286,7 @@
         // callback function
         onSelect: null,
         onHover: null,
+        onUnhover: null,
         onOpen: null,
         onClose: null,
         onDraw: null,
@@ -546,8 +547,11 @@
             if (!hasClass(target, 'is-disabled')) {
                 if (hasClass(target, 'pika-button') && !hasClass(target, 'is-empty') && !hasClass(target.parentNode, 'is-disabled')) {
                     self.emitHoveredDate(new Date(target.getAttribute('data-pika-year'), target.getAttribute('data-pika-month'), target.getAttribute('data-pika-day')));
+                    return;
                 }
             }
+
+            self.emitUnhover();
         };
 
 
@@ -899,6 +903,16 @@
 
             if (typeof this._o.onHover === 'function') {
                 this._o.onHover.call(this, date);
+            }
+        },
+
+        /**
+         * emits the unhover event from a date
+         */
+        emitUnhover: function()
+        {
+            if (typeof this._o.onHover === 'function') {
+                this._o.onUnhover.call(this);
             }
         },
 
