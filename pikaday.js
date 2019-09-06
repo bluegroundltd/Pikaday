@@ -285,7 +285,7 @@
 
         // callback function
         onSelect: null,
-        onMouseOver: null,
+        onHover: null,
         onOpen: null,
         onClose: null,
         onDraw: null,
@@ -531,7 +531,7 @@
             }
         };
 
-        self._onMouseOver = function(e)
+        self._onHover = function(e)
         {
             if (!self._v) {
                 return;
@@ -685,7 +685,7 @@
         self.el.className = 'pika-single' + (opts.isRTL ? ' is-rtl' : '') + (opts.theme ? ' ' + opts.theme : '');
 
         addEvent(self.el, 'mousedown', self._onMouseDown, true);
-        addEvent(self.el, 'mouseover', self._onMouseOver, true);
+        addEvent(self.el, 'mouseover', self._onHover, true);
         addEvent(self.el, 'touchend', self._onMouseDown, true);
         addEvent(self.el, 'change', self._onChange);
 
@@ -897,8 +897,8 @@
                 return;
             }
 
-            if (typeof this._o.onMouseOver === 'function') {
-                this._o.onMouseOver.call(this, date);
+            if (typeof this._o.onHover === 'function') {
+                this._o.onHover.call(this, date);
             }
         },
 
@@ -1319,7 +1319,7 @@
 
             this.hide();
             removeEvent(this.el, 'mousedown', this._onMouseDown, true);
-            removeEvent(this.el, 'mouseover', this._onMouseOver, true);
+            removeEvent(this.el, 'mouseover', this._onHover, true);
             removeEvent(this.el, 'touchend', this._onMouseDown, true);
             removeEvent(this.el, 'change', this._onChange);
             if (opts.keyboardInput) {
