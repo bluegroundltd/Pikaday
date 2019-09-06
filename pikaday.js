@@ -911,7 +911,7 @@
          */
         emitUnhover: function()
         {
-            if (typeof this._o.onHover === 'function') {
+            if (typeof this._o.onUnhover === 'function') {
                 this._o.onUnhover.call(this);
             }
         },
