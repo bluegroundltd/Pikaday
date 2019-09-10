@@ -1064,6 +1064,12 @@
             this.draw();
         },
 
+        setNumberOfMonths: function(value)
+        {
+            this._o.numberOfMonths = value;
+            this.adjustCalendars();
+        },
+
         setStartRange: function(value)
         {
             this._o.startRange = value;
