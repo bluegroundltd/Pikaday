@@ -237,7 +237,7 @@ http://nicolasgallagher.com/micro-clearfix-hack/
     box-sizing: border-box;
     width: 156px;
     position: absolute;
-    bottom: 42px;
+    bottom: 45px;
     left: 50%;
     font-size: 14px;
     line-height: 20px;
@@ -246,9 +246,7 @@ http://nicolasgallagher.com/micro-clearfix-hack/
     border-radius: 4px;
     background: #E0EBF6;
     transform: translateX(-50%);
-    transition: visibility 0.3s ease-in-out, opacity 0.3s ease-in-out;
-    visibility: hidden;
-    opacity: 0;
+    display: none;
 }
 
 .pika-event::after{
@@ -265,7 +263,6 @@ http://nicolasgallagher.com/micro-clearfix-hack/
     background: #E0EBF6;
 }
 
-.has-event:hover > .pika-event {
-    visibility: visible;
-    opacity: 1;
+.has-event .pika-button:hover ~ .pika-event {
+    display: block;
 }
