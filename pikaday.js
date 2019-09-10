@@ -927,7 +927,7 @@
         /**
          * change view to a specific date
          */
-        gotoDate: function(date)
+        gotoDate: function(date, forceCalendarUpdate)
         {
             var newCalendar = true;
 
@@ -945,7 +945,7 @@
                 newCalendar = (visibleDate < firstVisibleDate.getTime() || lastVisibleDate.getTime() < visibleDate);
             }
 
-            if (newCalendar) {
+            if (newCalendar || forceCalendarUpdate) {
                 this.calendars = [{
                     month: date.getMonth(),
                     year: date.getFullYear()
