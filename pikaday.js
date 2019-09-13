@@ -240,6 +240,7 @@
 
         startRange: null,
         endRange: null,
+        ranges: [],
 
         isRTL: false,
 
@@ -348,6 +349,19 @@
         if (opts.isEndRange) {
             arr.push('is-endrange');
         }
+
+        opts.startRangeArray.forEach(function(startRange) {
+            arr.push('is-startrange-' + startRange.index);
+        });
+
+        opts.endRangeArray.forEach(function(endRange) {
+            arr.push('is-endrange-' + endRange.index);
+        });
+
+        opts.inRangeArray.forEach(function(inRange) {
+            arr.push('is-inrange-' + inRange.index);
+        });
+
         return '<td data-day="' + opts.day + '" class="' + arr.join(' ') + '" aria-selected="' + ariaSelected + '">' +
                  '<button class="pika-button pika-day" type="button" ' +
                     'data-pika-year="' + opts.year + '" data-pika-month="' + opts.month + '" data-pika-day="' + opts.day + '">' +
@@ -1080,6 +1094,11 @@
             this._o.endRange = value;
         },
 
+        setRanges: function(value)
+        {
+            this._o.ranges = value;
+        },
+
         /**
          * refresh the HTML
          */
@@ -1241,7 +1260,16 @@
                     isDisabled = (opts.minDate && day < opts.minDate) ||
                                  (opts.maxDate && day > opts.maxDate) ||
                                  (opts.disableWeekends && isWeekend(day)) ||
-                                 (opts.disableDayFn && opts.disableDayFn(day));
+                                 (opts.disableDayFn && opts.disableDayFn(day))
+                    startRangeArray = opts.ranges
+                                  .map(function(range, index) { return {range: range, index: index}; })
+                                  .filter(function(rangeObj) { return compareDates(rangeObj.range.start, day); }),
+                    endRangeArray = opts.ranges
+                                  .map(function(range, index) { return {range: range, index: index}; })
+                                  .filter(function(rangeObj) { return compareDates(rangeObj.range.end, day); }),
+                    inRangeArray = opts.ranges
+                                  .map(function(range, index) { return {range: range, index: index}; })
+                                  .filter(function(rangeObj) { return rangeObj.range.start < day && day < rangeObj.range.end; });
 
                 if (isEmpty) {
                     if (i < before) {
@@ -1269,7 +1297,10 @@
                         isInRange: isInRange,
                         showDaysInNextAndPreviousMonths: opts.showDaysInNextAndPreviousMonths,
                         enableSelectionDaysInNextAndPreviousMonths: opts.enableSelectionDaysInNextAndPreviousMonths,
-                        event: event
+                        event: event,
+                        startRangeArray: startRangeArray,
+                        endRangeArray: endRangeArray,
+                        inRangeArray: inRangeArray
                     };
 
                 if (opts.pickWholeWeek && isSelected) {

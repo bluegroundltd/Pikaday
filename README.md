@@ -326,6 +326,10 @@ Update the range start date. For using two Pikaday instances to select a date ra
 
 Update the range end date. For using two Pikaday instances to select a date range.
 
+`picker.setRanges()`
+
+Update the ranges for multiple ranges. For using two Pikaday instances to select more than one date ranges (e.g. `picker.setRanges([{start: new Date(2018, 11, 24), end: new Date(2018, 11, 30)}, {start: new Date(2018, 11, 28), end: new Date(2018, 12, 2)}])`).
+
 ### Show and hide datepicker
 
 `picker.isVisible()`
