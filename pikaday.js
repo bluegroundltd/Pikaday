@@ -1266,7 +1266,7 @@
                     isDisabled = (opts.minDate && day < opts.minDate) ||
                                  (opts.maxDate && day > opts.maxDate) ||
                                  (opts.disableWeekends && isWeekend(day)) ||
-                                 (opts.disableDayFn && opts.disableDayFn(day))
+                                 (opts.disableDayFn && opts.disableDayFn(day)),
                     startRangeArray = opts.ranges
                                   .map(function(range, index) { return {range: range, index: index}; })
                                   .filter(function(rangeObj) { return compareDates(rangeObj.range.start, day); }),
