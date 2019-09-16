@@ -349,6 +349,12 @@
         if (opts.isEndRange) {
             arr.push('is-endrange');
         }
+        if (opts.isFirstDay) {
+            arr.push('is-firstday');
+        }
+        if (opts.isLastDay) {
+            arr.push('is-lastday');
+        }
 
         opts.startRangeArray.forEach(function(startRange) {
             arr.push('is-startrange-' + startRange.index);
@@ -1283,6 +1289,9 @@
                     }
                 }
 
+                var isFirstDay = dayNumber === 1,
+                    isLastDay = dayNumber === days;
+
                 var dayConfig = {
                         day: dayNumber,
                         month: monthNumber,
@@ -1300,7 +1309,9 @@
                         event: event,
                         startRangeArray: startRangeArray,
                         endRangeArray: endRangeArray,
-                        inRangeArray: inRangeArray
+                        inRangeArray: inRangeArray,
+                        isFirstDay: isFirstDay,
+                        isLastDay: isLastDay
                     };
 
                 if (opts.pickWholeWeek && isSelected) {
