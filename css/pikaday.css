@@ -68,6 +68,9 @@ http://nicolasgallagher.com/micro-clearfix-hack/
     top: 5px;
     opacity: 0;
 }
+.pika-title select:disabled {
+    cursor: default;
+  }
 
 .pika-prev,
 .pika-next {

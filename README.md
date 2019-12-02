@@ -180,6 +180,8 @@ Pikaday has many useful options:
 * `onClose` callback function for when the picker is hidden
 * `onDraw` callback function for when the picker draws a new month
 * `keyboardInput` enable keyboard input support (default `true`)
+* `monthSelection` enable month selection (default `true`)
+* `yearSelection` enable year selection (default `true`)
 
 ### Styling
 
