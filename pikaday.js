@@ -447,7 +447,7 @@
             opts = instance._o,
             isMinYear = year === opts.minYear,
             isMaxYear = year === opts.maxYear,
-            html = '<div id="' + randId + '" class="pika-title" role="heading" aria-live="assertive">',
+            html = '<div id="' + randId + '" class="pika-title">',
             monthHtml,
             yearHtml,
             prev = true,
@@ -460,7 +460,7 @@
                 opts.i18n.months[i] + '</option>');
         }
 
-        monthHtml = '<div class="pika-label">' + opts.i18n.months[month] + '<select class="pika-select pika-select-month" tabindex="-1"'
+        monthHtml = '<div class="pika-label">' + opts.i18n.months[month] + '<select class="pika-select pika-select-month" tabindex="-1" aria-label="select month"'
                     + (!opts.monthSelection ? 'disabled' : ' ') + '>' + arr.join('') + '</select></div>';
 
         if (isArray(opts.yearRange)) {
@@ -476,7 +476,7 @@
                 arr.push('<option value="' + i + '"' + (i === year ? ' selected="selected"': '') + '>' + (i) + '</option>');
             }
         }
-        yearHtml = '<div class="pika-label">' + year + opts.yearSuffix + '<select class="pika-select pika-select-year" tabindex="-1"'
+        yearHtml = '<div class="pika-label">' + year + opts.yearSuffix + '<select class="pika-select pika-select-year" tabindex="-1" aria-label="select year"'
                     + (!opts.yearSelection ? 'disabled' : ' ') + '>' + arr.join('') + '</select></div>';
 
         if (opts.showMonthAfterYear) {
