@@ -166,11 +166,11 @@
     adjustCalendar = function(calendar) {
         if (calendar.month < 0) {
             calendar.year -= Math.ceil(Math.abs(calendar.month)/12);
-            calendar.month += 12;
+            calendar.month = calendar.month % 12 + 12;
         }
         if (calendar.month > 11) {
             calendar.year += Math.floor(Math.abs(calendar.month)/12);
-            calendar.month -= 12;
+            calendar.month = calendar.month % 12;
         }
         return calendar;
     },
@@ -299,7 +299,11 @@
         monthSelection: true,
 
         // Enable year selection
-        yearSelection: true
+        yearSelection: true,
+
+        // Enable multiple views
+        multipleViews: false,
+        monthViews: []
     },
 
 
@@ -460,7 +464,7 @@
                 opts.i18n.months[i] + '</option>');
         }
 
-        monthHtml = '<div class="pika-label">' + opts.i18n.months[month] + '<select class="pika-select pika-select-month" tabindex="-1"'
+        monthHtml = '<div class="pika-label" data-label-month="' + month + '" data-label-year="' + year + '">' + opts.i18n.months[month] + '<select class="pika-select pika-select-month" tabindex="-1"'
                     + (!opts.monthSelection ? 'disabled' : ' ') + '>' + arr.join('') + '</select></div>';
 
         if (isArray(opts.yearRange)) {
@@ -476,7 +480,7 @@
                 arr.push('<option value="' + i + '"' + (i === year ? ' selected="selected"': '') + '>' + (i) + '</option>');
             }
         }
-        yearHtml = '<div class="pika-label">' + year + opts.yearSuffix + '<select class="pika-select pika-select-year" tabindex="-1"'
+        yearHtml = '<div class="pika-label" data-label-month="' + month + '" data-label-year="' + year + '">' + year + opts.yearSuffix + '<select class="pika-select pika-select-year" tabindex="-1"'
                     + (!opts.yearSelection ? 'disabled' : ' ') + '>' + arr.join('') + '</select></div>';
 
         if (opts.showMonthAfterYear) {
@@ -501,6 +505,16 @@
         }
 
         return html += '</div>';
+    },
+
+    renderMonthsView = function(opts, month, year) {
+      const toggledMonthView = opts.monthViews.find(view => parseInt(view.month, 10) === month && parseInt(view.year, 10)  === year);
+
+      if(!toggledMonthView) {
+        return '';
+      }
+
+      return  '<div class="pika-months"></div>'
     },
 
     renderTable = function(opts, data, randId)
@@ -557,6 +571,11 @@
                 }
             } else {
                 self._c = true;
+            }
+            if (hasClass(target, 'pika-label')) {
+                if(opts.multipleViews) {
+                  self.toggleView(target.getAttribute('data-label-month'), target.getAttribute('data-label-year'));
+                }
             }
         };
 
@@ -796,9 +815,6 @@
 
             opts.disableDayFn = (typeof opts.disableDayFn) === 'function' ? opts.disableDayFn : null;
 
-            var nom = parseInt(opts.numberOfMonths, 10) || 1;
-            opts.numberOfMonths = nom > 4 ? 4 : nom;
-
             if (!isDate(opts.minDate)) {
                 opts.minDate = false;
             }
@@ -915,6 +931,19 @@
             if (!preventOnSelect && typeof this._o.onSelect === 'function') {
                 this._o.onSelect.call(this, this.getDate());
             }
+        },
+
+        /**
+         * toggles view between months and calendar
+         */
+        toggleView: function(month, year) {
+          const toggledView = this._o.monthViews.find(view => view.month === month && view.year === year);
+          if(toggledView) {
+            this._o.monthViews = this._o.monthViews.filter(view => view.month !== month && view.year !== year)
+          } else {
+            this._o.monthViews.push({month: month, year: year});
+          }
+          this.draw();
         },
 
         /**
@@ -1144,7 +1173,7 @@
 
             for (var c = 0; c < opts.numberOfMonths; c++) {
                 randId = 'pika-title-' + Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 2);
-                html += '<div class="pika-lendar">' + renderTitle(this, c, this.calendars[c].year, this.calendars[c].month, this.calendars[0].year, randId) + this.render(this.calendars[c].year, this.calendars[c].month, randId) + '</div>';
+                html += '<div class="pika-lendar">' + renderTitle(this, c, this.calendars[c].year, this.calendars[c].month, this.calendars[0].year, randId) + this.render(this.calendars[c].year, this.calendars[c].month, randId) + renderMonthsView(opts, this.calendars[c].month, this.calendars[c].year) + '</div>';
             }
 
             this.el.innerHTML = html;
